@@ -21,6 +21,40 @@ import VueCollections from 'vue-collections'
 Vue.use(VueColections)
 ```
 
+## Collections
+
+A light implementation of Collections that binds a collection of models to a Vuex instance, and provides some basic methods for CRUD operations.
+
+```js
+import { Collection } from 'vue-collections'
+
+export default {
+  collection() {
+    return new Collection({
+      basePath: 'tenants',
+      createPath: 'invite'
+    })
+  },
+  created() {
+    this.fetch()
+  },
+  methods: {
+    fetch() {
+      return this.$collection.fetch()
+    }
+  }
+}
+```
+
+The `basePath` option will determine the path of the URL following the base path of the API, which is set in ./configs
+The `createPath` option is optional and will be appened to the API path following `basePath`, if included.
+These options allow you to fetch your collection at `localhost:3456/tenants` and to create new users at `localhost:3456/tenants/invite`.
+
+The main reason why this simple wrapper is useful is that the options you pass to it will maintain the location of the endpoints you need when you want to dispatch CRUD events via `dispatch('fetch')`, `dispatch('create', model)`, `dispatch('update', model)`, or `dispatch('delete', model)`.
+
+The Collection wrapper will also server as a control layer between the websocket server and the Vuex data store, when using websockets to subcribe to a collection of models.
+
+
 ## Build Setup
 
 ``` bash
