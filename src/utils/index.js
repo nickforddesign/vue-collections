@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import moment from 'moment'
-import { Request } from 'vue-req'
+import { Request } from 'vue-requests'
 
 export { Request }
 

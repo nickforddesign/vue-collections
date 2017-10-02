@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import VueRequest from 'vue-req'
+import VueRequest from 'vue-requests'
 import * as VueCollection from '../index'
 import model from '../demo/user'
 import collection_data from './collection_data'
