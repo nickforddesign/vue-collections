@@ -1,10 +1,10 @@
 import makeMixin from './mixin'
-import Model from './model'
+import Collection from './collection'
 
-export default class VueModel {
+export default class VueCollection {
   static install(Vue, options) {
     Vue.mixin(makeMixin(Vue))
   }
 }
 
-export { Model }
+export { Collection }

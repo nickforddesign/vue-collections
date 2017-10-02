@@ -1,6 +1,6 @@
 import _ from 'lodash'
-import { Model } from '../index'
-import { ObjectId, ISODate } from './types'
+import { Model } from 'vue-models'
+import { ObjectId, ISODate } from '../types'
 
 const defaults = {
   name: 'user',
