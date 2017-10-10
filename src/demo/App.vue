@@ -1,35 +1,44 @@
 <template>
   <div id="app">
-    <button @click="test('get')">Get</button>
-    <button @click="test('put')">Put</button>
-    <button @click="test('post')">Post</button>
-    <button @click="test('delete')">Delete</button>
+    <h1>vue-collections</h1>
 
-    <div>
-      <button @click="jsfiddle">Get JSFiddle</button>
+    <p>The following is a demo of using the vue-collections plugin to fetch models from a simulated REST API. The models are then passed to the vue-models plugin.</p>
+
+    <div v-if="collection.length">
+      <div v-for="(model, index) in $collection.models" :key="index">
+        <card :model="model" />
+      </div>
+      <button @click="reset">Fetch</button>
+    </div>
+    <div v-else>
+      No models in collection
+      <button @click="fetch">Fetch</button>
     </div>
   </div>
 </template>
 
 <script>
+import { Collection } from '../index'
+import Card from './card'
+
 export default {
-  name: 'app',
+  name: 'demo',
+  collection() {
+    return new Collection({
+      basePath: '/users'
+      // createPath: 'invite'
+    })
+  },
   methods: {
-    test(method) {
-      this.$request('/thing', {
-        method
-      })
-        .then(response => {
-          console.log({response})
-        })
-        .catch(err => {
-          console.warn(err)
-        })
+    fetch() {
+      return this.$collection.fetch()
     },
-    async jsfiddle() {
-      const response = await this.$request('http://google.com/')
-      console.log({response})
+    reset() {
+      return this.$collection.reset()
     }
+  },
+  components: {
+    Card
   }
 }
 </script>
@@ -39,8 +48,7 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  padding: 0 30px;
 }
 </style>

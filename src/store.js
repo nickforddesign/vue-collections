@@ -4,8 +4,6 @@ import Vuex from 'vuex'
 import { Model } from 'vue-models'
 import { ISODate } from './types'
 
-// import store from '@/store'
-// import Request from '@/utils/request_auth'
 import { sort, sortByDate, Request } from './utils'
 
 Vue.use(Vuex)
@@ -40,7 +38,6 @@ export default (
     return output
   }
   function _request () {
-    // console.log('calling func', this)
     return _.get(this._vm, '$request') || Request
   }
 
@@ -50,6 +47,9 @@ export default (
     },
     getters: {
       collection: state => {
+        return state.collection
+      },
+      models: state => {
         return state.collection
       }
     },
@@ -82,46 +82,28 @@ export default (
         commit('RESET')
       },
       fetch({ commit }) {
-        // console.log(this._vm)
-        // store.dispatch('loading_begin')
-
-        // const req = this._vm.$request(`${_basePath()}`)
-        // const req = new Request(`${_basePath()}`)
-        // console.log(_request().toString())
         const req = _request.apply(this)(`${_basePath()}`)
-        console.log(req)
         req.then(response => {
           commit('FETCH', response)
-          // store.dispatch('loading_end')
         })
         return req
       },
       add({ commit }, model) {
-        // store.dispatch('loading_begin')
-
-        // const req = new Request(`${_basePath()}/${createPath}`, {
-        // const req = this._vm.$request(`${_basePath()}/${createPath}`, {
         const req = _request.apply(this)(`${_basePath()}/${createPath}`, {
           method: 'POST',
           body: model
         })
         req.then(response => {
           commit('ADD', response)
-          // store.dispatch('loading_end')
         })
         return req
       },
       delete({ commit }, id) {
-        // store.dispatch('loading_begin')
-
-        // const req = new Request(`${_basePath()}/${id}`, {
-        // const req = this._vm.$request(`${_basePath()}/${id}`, {
         const req = _request.apply(this)(`${_basePath()}/${id}`, {
           method: 'DELETE'
         })
         req.then(response => {
           commit('DELETE', id)
-          // store.dispatch('loading_end')
         })
         return req
       }

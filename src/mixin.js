@@ -13,7 +13,7 @@ const makeComputedProp = (vm) => {
     }
   }
   vm.$options.computed.collection = () => {
-    return vm._collection.collection
+    return vm._collection.models
   }
 }
 

@@ -1,26 +1,18 @@
 import Vue from 'vue'
 import App from './App'
-import VueRequest from '../index'
+import VueCollections from '../index'
+import VueRequest from 'vue-requests'
+import VueModels from 'vue-models'
 
 Vue.config.productionTip = false
 
-const token = 'test'
-
 Vue.use(VueRequest, {
-  root: 'http://localhost:8080',
-  headers: {
-    Access() {
-      return token
-    },
-    Refresh: 'test_refresh_token'
-  },
-  before() {
-    console.log('fire this before')
-  },
-  timeout() {
-    console.log('fire this on timeout')
-  }
+  root: 'http://localhost:6846'
 })
+
+Vue.use(VueModels)
+
+Vue.use(VueCollections)
 
 /* eslint-disable no-new */
 new Vue({

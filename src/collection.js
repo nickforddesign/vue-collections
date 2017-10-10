@@ -25,7 +25,7 @@ export default class Collection {
       store,
       computed: {
         ...mapGetters([
-          'collection'
+          'models'
         ])
       },
       methods: {
