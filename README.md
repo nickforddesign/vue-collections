@@ -1,5 +1,6 @@
 # vue-collections
 
+[![Version](https://img.shields.io/npm/v/vue-collections.svg)](#)
 [![Build](https://travis-ci.org/nickforddesign/vue-collections.svg?branch=master)](#)
 [![Coverage Status](https://coveralls.io/repos/github/nickforddesign/vue-collections/badge.svg?branch=master)](https://coveralls.io/github/nickforddesign/vue-collections?branch=master)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
