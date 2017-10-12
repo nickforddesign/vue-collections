@@ -1,18 +1,26 @@
 import Vue from 'vue'
-import { mapGetters } from 'vuex'
-import _store from './store'
-import { Model } from 'vue-models'
+// import { mapGetters } from 'vuex' // this is causing huge builds
+import Store from './store'
+// import { Model } from 'vue-models'
+
+// let mapGetters
 
 export default class Collection {
+  static init(Vue, Vuex) {
+    Store.init(Vue, Vuex)
+    // mapGetters = process.env.NODE_ENV === 'test'
+    //   ? require('vuex').mapGetters
+    //   : Vuex.mapGetters
+  }
   constructor({
-    model = Model,
+    model,
     id_attribute = '_id',
     basePath = '',
     createPath = '',
     reverse = false,
     sortBy = false
   }) {
-    const store = _store(
+    const store = new Store(
       model,
       id_attribute,
       basePath,
@@ -24,9 +32,12 @@ export default class Collection {
       name: 'collection',
       store,
       computed: {
-        ...mapGetters([
-          'models'
-        ])
+        models() {
+          return this.$store.getters.models
+        }
+        // ...mapGetters([
+        //   'models'
+        // ])
       },
       methods: {
         fetch() {

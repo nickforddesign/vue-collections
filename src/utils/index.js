@@ -1,19 +1,20 @@
-import _ from 'lodash'
-import moment from 'moment'
-import { Request } from 'vue-requests'
+// import _ from 'lodash'
+// import moment from 'moment'
+// import { Request } from 'vue-requests'
 
-export { Request }
+import { isEmpty } from 'ramda'
 
-export function isDef (v) {
-  if (v === undefined) return false
-  return !_.some(...v, _.isEmpty)
+// export { Request }
+
+export function isDef (obj) {
+  if (obj === undefined) return false
+  return !isEmpty(obj)
 }
-
 // sorting
 
-export const sortByDate = (key, a, b) => {
-  return moment.utc(a[key]) > moment.utc(b[key]) ? 1 : -1
-}
+// export const sortByDate = (key, a, b) => {
+//   return moment.utc(a[key]) > moment.utc(b[key]) ? 1 : -1
+// }
 
 export const sort = (key, a, b) => {
   return a[key] < b[key] ? 1 : -1

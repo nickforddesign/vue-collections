@@ -1,5 +1,6 @@
 import Vue from 'vue'
-// import VueRequest from 'vue-requests'
+import Vuex from 'vuex'
+import VueRequests from 'vue-requests'
 import VueCollection from '../index'
 import model from '../demo/user'
 import collection_data from './collection_data'
@@ -11,7 +12,8 @@ const { Collection } = VueCollection
 fetch.mockResponse(JSON.stringify(collection_data), {
   status: 200
 })
-
+Vue.use(Vuex)
+Vue.use(VueRequests)
 Vue.use(VueCollection)
 
 const test_component = new Vue({

@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { path } from 'ramda'
 import { isDef } from './utils'
 
 const makeComputedProp = (vm) => {
@@ -28,7 +28,7 @@ export default (Vue) => ({
     }
   },
   beforeDestroy() {
-    if (_.get(this, '$options.collection')) {
+    if (path(['$options', 'collection'], this)) {
       this.$collection.reset()
     }
   }

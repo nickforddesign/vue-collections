@@ -8,7 +8,7 @@
       <div v-for="(model, index) in $collection.models" :key="index">
         <card :model="model" />
       </div>
-      <button @click="reset">Fetch</button>
+      <button @click="reset">Clear</button>
     </div>
     <div v-else>
       No models in collection
@@ -18,11 +18,14 @@
 </template>
 
 <script>
-import { Collection } from '../index'
+import { Collection } from '../index.esm'
 import Card from './card'
 
 export default {
   name: 'demo',
+  created() {
+    console.log(this.$collection)
+  },
   collection() {
     return new Collection({
       basePath: '/users'
@@ -50,5 +53,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   padding: 0 30px;
+  width: 600px;
+  max-width: 100%;
 }
 </style>
