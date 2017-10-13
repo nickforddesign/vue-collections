@@ -55,6 +55,10 @@ The main reason why this simple wrapper is useful is that the options you pass t
 
 The Collection wrapper will also server as a control layer between the websocket server and the Vuex data store, when using websockets to subcribe to a collection of models.
 
+## Models
+
+Optionally, you may pass in a `vue-models` model class, which will transform the data in each of the models per the model's schema.
+
 
 ## Build Setup
 

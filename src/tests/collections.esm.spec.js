@@ -1,26 +1,30 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VueRequests from 'vue-requests'
-import VueCollection, { Collection } from '../index.esm'
+import VueModels from 'vue-models'
+import VueCollections, { Collection } from '../index.esm'
 import model from '../demo/user'
-import collection_data from './collection_data'
+import collection_data from '../demo/collection_data'
 
 import tests from './tests'
 
-fetch.mockResponse(JSON.stringify(collection_data), {
+fetch.mockResponse(JSON.stringify(collection_data()), {
   status: 200
 })
 Vue.use(Vuex)
-Vue.use(VueRequests)
-Vue.use(VueCollection)
+Vue.use(VueRequests, {
+  root: 'http://localhost:6846'
+})
+Vue.use(VueModels)
+Vue.use(VueCollections, Vuex)
 
 const test_component = new Vue({
   template: '<div/>',
   collection() {
     return new Collection({
       model,
-      basePath: 'account/bills',
-      sortBy: 'due_date',
+      basePath: 'users',
+      // sortBy: 'due_date',
       reverse: true
     })
   },

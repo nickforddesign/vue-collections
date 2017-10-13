@@ -14,7 +14,6 @@ Vue.use(VueRequest, {
 })
 
 Vue.use(VueModels)
-
 Vue.use(VueCollections, Vuex)
 
 /* eslint-disable no-new */

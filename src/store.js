@@ -1,20 +1,15 @@
 import { path, mergeDeepRight } from 'ramda'
-// import { Model } from 'vue-models'
-// import { ISODate } from './types'
-
 import { sort } from './utils'
 
 let Vuex
 
 function getRequestFunction(store) {
-  const request = path(['$request'], store._vm)
+  const request = path(['_vm', '$request'], store)
+
   if (!request) {
     throw ReferenceError('VueRequests plugin is missing')
   }
   return request
-  // return process.env.NODE_ENV === 'test'
-  //   ? require('vue-requests').Request
-  //   : path(['$request'], store._vm)
 }
 
 export default class Store {
@@ -24,7 +19,7 @@ export default class Store {
       : _Vuex
   }
   constructor (
-    model,
+    Model,
     id_attribute = '_id',
     basePath = '',
     createPath = '',
@@ -40,6 +35,11 @@ export default class Store {
       }
       return output
     }
+    const _translate = (data) => {
+      return Model
+        ? new Model(data).$data
+        : data
+    }
     const _process = (collection) => {
       let output = collection
       if (sortBy) {
@@ -53,7 +53,21 @@ export default class Store {
       if (reverse) {
         output = collection.reverse()
       }
+      if (Model) {
+        output = collection.map(data => _translate(data))
+      }
       return output
+    }
+    const _insert = (collection, model) => {
+      let match = collection.find(data => data.id === model.id)
+      if (match) {
+        match = model
+      } else {
+        const method = reverse
+          ? 'unshift'
+          : 'push'
+        collection[method](model)
+      }
     }
 
     return new Vuex.Store({
@@ -73,14 +87,12 @@ export default class Store {
           state.collection = []
         },
         FETCH(state, collection) {
-          state.collection = _process(collection)
+          _process(collection).map(model => {
+            _insert(state.collection, model)
+          })
         },
         ADD(state, model) {
-          if (reverse) {
-            state.collection.unshift(model)
-          } else {
-            state.collection.push(model)
-          }
+          _insert(state.collection, _translate(model))
         },
         DELETE(state, id) {
           const i = state.collection.findIndex(model => model[id_attribute] === id)
@@ -97,30 +109,17 @@ export default class Store {
           commit('RESET')
         },
         fetch({ commit }) {
-          const req = getRequestFunction(this)(`${_basePath()}`)
-          req.then(response => {
+          const request = getRequestFunction(this)(`${_basePath()}`)
+          request.then(response => {
             commit('FETCH', response)
           })
-          return req
+          return request
         },
         add({ commit }, model) {
-          const req = getRequestFunction(this)(`${_basePath()}/${createPath}`, {
-            method: 'POST',
-            body: model
-          })
-          req.then(response => {
-            commit('ADD', response)
-          })
-          return req
+          commit('ADD', model)
         },
         delete({ commit }, id) {
-          const req = getRequestFunction(this)(`${_basePath()}/${id}`, {
-            method: 'DELETE'
-          })
-          req.then(response => {
-            commit('DELETE', id)
-          })
-          return req
+          commit('DELETE', id)
         }
       }
     })

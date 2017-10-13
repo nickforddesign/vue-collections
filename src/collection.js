@@ -1,16 +1,14 @@
-import Vue from 'vue'
-// import { mapGetters } from 'vuex' // this is causing huge builds
+// import Vue from 'vue'
 import Store from './store'
-// import { Model } from 'vue-models'
 
-// let mapGetters
+let Vue
 
 export default class Collection {
-  static init(Vue, Vuex) {
-    Store.init(Vue, Vuex)
-    // mapGetters = process.env.NODE_ENV === 'test'
-    //   ? require('vuex').mapGetters
-    //   : Vuex.mapGetters
+  static init(_Vue, Vuex) {
+    Vue = process.env.NODE_ENV === 'test'
+      ? require('vue')
+      : _Vue
+    Store.init(_Vue, Vuex)
   }
   constructor({
     model,
@@ -35,9 +33,6 @@ export default class Collection {
         models() {
           return this.$store.getters.models
         }
-        // ...mapGetters([
-        //   'models'
-        // ])
       },
       methods: {
         fetch() {
@@ -51,6 +46,34 @@ export default class Collection {
         },
         delete(id) {
           return this.$store.dispatch('delete', id)
+        },
+        find(map) {
+          return this.models.find(model => {
+            let match = true
+            for (let key in map) {
+              if (model[key] !== map[key]) {
+                match = false
+              }
+            }
+            return match
+          })
+        },
+        filter(map) {
+          return this.models.filter(model => {
+            let match = true
+            for (let key in map) {
+              if (model[key] !== map[key]) {
+                match = false
+              }
+            }
+            return match
+          })
+        },
+        encode() {
+          const Model = model
+          return this.models.map(data => {
+            return new Model(data).encode()
+          })
         }
       }
     })

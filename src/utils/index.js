@@ -1,5 +1,3 @@
-// import _ from 'lodash'
-// import moment from 'moment'
 // import { Request } from 'vue-requests'
 
 import { isEmpty } from 'ramda'
