@@ -1,8 +1,8 @@
 import Vue from 'vue'
 // import Vuex from 'vuex'
 import App from './App'
-// import VueCollections from '../index'
-import VueCollections from '../../dist/vue-collections.esm'
+import VueCollections from '../index'
+// import VueCollections from '../../dist/vue-collections.esm'
 import VueRequest from 'vue-requests'
 import VueModels from 'vue-models'
 

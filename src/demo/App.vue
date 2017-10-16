@@ -65,8 +65,8 @@
 </template>
 
 <script>
-// import { Collection } from '../index.esm'
-import { Collection } from '../../dist/vue-collections.esm'
+import { Collection } from '../index.esm'
+// import { Collection } from '../../dist/vue-collections.esm'
 import User from './user'
 import Card from './card'
 import data from './collection_data'
@@ -76,7 +76,8 @@ export default {
   collection() {
     return new Collection({
       basePath: '/users',
-      model: User
+      model: User,
+      sortBy: 'last_name'
       // createPath: 'invite'
     })
   },
@@ -87,7 +88,8 @@ export default {
   },
   methods: {
     fetch() {
-      return this.$collection.fetch()
+      this.$collection.fetch()
+      this.$collection.sort()
     },
     reset() {
       return this.$collection.reset()
