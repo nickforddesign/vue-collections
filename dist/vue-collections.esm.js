@@ -2862,6 +2862,7 @@ var Collection$1 = function () {
   _createClass(Collection, null, [{
     key: 'init',
     value: function init(_Vue) {
+      console.log('HELLO', _Vue);
       Vue = process.env.NODE_ENV === 'test' ? require('vue') : _Vue;
     }
   }]);
