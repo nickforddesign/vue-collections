@@ -65,7 +65,8 @@
 </template>
 
 <script>
-import { Collection } from '../index.esm'
+// import { Collection } from '../index.esm'
+import { Collection } from '../../dist/vue-collections.esm'
 import User from './user'
 import Card from './card'
 import data from './collection_data'
