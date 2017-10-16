@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
+// import Vuex from 'vuex'
 import VueRequests from 'vue-requests'
 import VueModels from 'vue-models'
 import VueCollections, { Collection } from '../index.esm'
@@ -11,12 +11,12 @@ import tests from './tests'
 fetch.mockResponse(JSON.stringify(collection_data()), {
   status: 200
 })
-Vue.use(Vuex)
+// Vue.use(Vuex)
 Vue.use(VueRequests, {
   root: 'http://localhost:6846'
 })
 Vue.use(VueModels)
-Vue.use(VueCollections, Vuex)
+Vue.use(VueCollections)
 
 const test_component = new Vue({
   template: '<div/>',
