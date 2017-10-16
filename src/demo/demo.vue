@@ -83,7 +83,7 @@ export default {
       basePath: '/users',
       model: User,
       sortBy: 'last_name'
-    })
+    }, data())
   },
   computed: {
     encoded() {

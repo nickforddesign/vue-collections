@@ -1,11 +1,16 @@
 export default (test_component, Collection) => {
   describe('VueCollection - Vue binding', () => {
     it('should correctly bind a collection to vue instance', () => {
-      expect(test_component.collection instanceof Array)
+      expect(test_component.$collection.models instanceof Array)
         .toBe(true)
     })
 
     it('should fetch models from a collection', () => {
+      expect(test_component.$collection.models.length)
+        .toBe(3)
+    })
+
+    it('should have models accessible from the shortcut property', () => {
       expect(test_component.collection.length)
         .toBe(3)
     })

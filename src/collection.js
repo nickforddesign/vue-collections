@@ -9,7 +9,6 @@ let Vue
 
 export default class Collection {
   static init(_Vue) {
-    console.log('HELLO', _Vue)
     Vue = process.env.NODE_ENV === 'test'
       ? require('vue')
       : _Vue
@@ -25,6 +24,9 @@ export default class Collection {
       return a[key] < b[key] ? 1 : -1
     }
   }, initial_state = []) {
+    if (!Vue) {
+      throw new ReferenceError('You must install VueCollections via Vue.use(VueCollections) before you can create collections.')
+    }
     return new Vue({
       name: 'collection',
       data() {
