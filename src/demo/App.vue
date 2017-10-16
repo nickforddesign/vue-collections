@@ -17,10 +17,11 @@
             <div v-else>
               <!-- No models in collection -->
             </div>
-            <button @click="fetch">Add All Users</button>
+            <button @click="fetch">Fetch All Users</button>
+            <button @click="addAll">Add All Users</button>
             <button @click="add(0)">Add User One</button>
-            <button @click="add(1)">Add User Three</button>
-            <button @click="add(2)">Add User Two</button>
+            <button @click="add(1)">Add User Two</button>
+            <button @click="add(2)">Add User Three</button>
           </td>
         </tr>
       </tbody>
@@ -89,6 +90,12 @@ export default {
   methods: {
     fetch() {
       this.$collection.fetch()
+      // this.$collection.add(data())
+      // this.$collection.sort()
+    },
+    async addAll() {
+      // this.$collection.fetch()
+      await this.$collection.add(data())
       this.$collection.sort()
     },
     reset() {

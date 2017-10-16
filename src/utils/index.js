@@ -9,6 +9,7 @@ export function isDef (obj) {
 export async function insertModel (vm, model = {}) {
   const model_data = translateModel(vm, model)
   let match = vm.models.find(data => data.id === model_data.id)
+  console.log({match})
   if (match) {
     match = model_data
   } else {

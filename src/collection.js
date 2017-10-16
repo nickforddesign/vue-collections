@@ -21,8 +21,8 @@ export default class Collection {
     reverse = false,
     sortBy = false,
     sort = (key, a, b) => {
-      console.log('sorting')
-      console.log(a[key], b[key])
+      // console.log('sorting')
+      // console.log(a[key], b[key])
       return a[key] < b[key] ? 1 : -1
     }
   }) {
@@ -60,11 +60,12 @@ export default class Collection {
         async reset() {
           this.models = []
         },
-        async add(model) {
-          if (model instanceof Array) {
-            insertModels(this, model)
+        add(data) {
+          console.log({data})
+          if (data instanceof Array) {
+            insertModels(this, data)
           } else {
-            insertModel(this, model)
+            insertModel(this, data)
           }
         },
         async delete(id) {
@@ -93,12 +94,12 @@ export default class Collection {
           })
         },
         sort() {
-          console.log('sort')
-          console.log({sortBy})
+          // console.log('sort')
+          // console.log({sortBy})
           if (sortBy) {
             const full_data = this.encode()
             full_data.sort(sort.bind(null, sortBy))
-            console.log(full_data)
+            // console.log(full_data)
             this.models.sort(sort.bind(null, sortBy))
           }
           if (this.reverse) {
