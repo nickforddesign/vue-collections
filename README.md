@@ -24,7 +24,7 @@ Vue.use(VueColections)
 
 ## Demo
 
-Clone the repository and run `npm start` or view a live demo [here](https://cdn.rawgit.com/nickforddesign/vue-collections/fd35824a/dist/index.html).
+Clone the repository and run `npm start` or view a live demo [here](https://cdn.rawgit.com/nickforddesign/vue-collections/b7136770/dist/index.html).
 
 ## Collections
 
