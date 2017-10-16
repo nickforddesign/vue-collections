@@ -1,5 +1,5 @@
 /**
-  * vue-collections v1.1.1
+  * vue-collections v1.1.2
   * (c) 2017 Nick Ford
   * @license MIT
   */
@@ -2827,7 +2827,7 @@ var makeComputedProp = function makeComputedProp(vm) {
     }
   };
   vm.$options.computed.collection = function () {
-    return vm.$collection.models;
+    return vm._collection.models;
   };
 };
 
@@ -2868,7 +2868,6 @@ var Collection$1 = function () {
   _createClass(Collection, null, [{
     key: 'init',
     value: function init(_Vue) {
-      console.log('HELLO', _Vue);
       Vue = process.env.NODE_ENV === 'test' ? require('vue') : _Vue;
     }
   }]);
@@ -2894,6 +2893,9 @@ var Collection$1 = function () {
 
     _classCallCheck(this, Collection);
 
+    if (!Vue) {
+      throw new ReferenceError('You must install VueCollections via Vue.use(VueCollections) before you can create collections.');
+    }
     return new Vue({
       name: 'collection',
       data: function data() {
