@@ -2803,9 +2803,11 @@ function translateModel(vm, data) {
 // encode entire collection based on schema
 function encodeModels(vm) {
   var Model = vm.Model;
-  return vm.models.map(function (data) {
-    return new Model(data).encode();
-  });
+  if (Model) {
+    return vm.models.map(function (data) {
+      return new Model(data).encode();
+    });
+  }
 }
 
 // reset collection or model state
@@ -2865,18 +2867,17 @@ var Collection$1 = function () {
         _id_attribute = _ref$id_attribute === undefined ? 'id' : _ref$id_attribute,
         _ref$basePath = _ref.basePath,
         basePath = _ref$basePath === undefined ? '' : _ref$basePath,
-        _ref$createPath = _ref.createPath,
-        createPath = _ref$createPath === undefined ? '' : _ref$createPath,
         _ref$reverse = _ref.reverse,
         _reverse = _ref$reverse === undefined ? false : _ref$reverse,
         _ref$sortBy = _ref.sortBy,
         sortBy = _ref$sortBy === undefined ? false : _ref$sortBy,
         _ref$sort = _ref.sort,
         _sort = _ref$sort === undefined ? function (key, a, b) {
-      // console.log('sorting')
       // console.log(a[key], b[key])
       return a[key] < b[key] ? 1 : -1;
     } : _ref$sort;
+
+    var initial_state = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
     _classCallCheck(this, Collection);
 
@@ -2884,7 +2885,7 @@ var Collection$1 = function () {
       name: 'collection',
       data: function data() {
         return {
-          models: []
+          models: initial_state
         };
       },
 
