@@ -1,5 +1,5 @@
-export default (test_component) => {
-  describe('VueCollection', () => {
+export default (test_component, Collection) => {
+  describe('VueCollection - Vue binding', () => {
     it('should correctly bind a collection to vue instance', () => {
       expect(test_component.collection instanceof Array)
         .toBe(true)
@@ -95,5 +95,18 @@ export default (test_component) => {
     })
   })
 
-  // write tests to use bound $request method
+  describe('VueCollection - Collections', () => {
+    const collection = new Collection({
+      basePath: 'things'
+    }, [{
+      id: 1
+    },
+    {
+      id: 2
+    }])
+    it('should be able to handle initial state passed', () => {
+      expect(collection.models.length)
+        .toBe(2)
+    })
+  })
 }

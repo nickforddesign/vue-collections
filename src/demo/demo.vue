@@ -83,7 +83,6 @@ export default {
       basePath: '/users',
       model: User,
       sortBy: 'last_name'
-      // createPath: 'invite'
     })
   },
   computed: {

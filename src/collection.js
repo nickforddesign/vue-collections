@@ -17,20 +17,18 @@ export default class Collection {
     model = null,
     id_attribute = 'id',
     basePath = '',
-    createPath = '',
     reverse = false,
     sortBy = false,
     sort = (key, a, b) => {
-      // console.log('sorting')
       // console.log(a[key], b[key])
       return a[key] < b[key] ? 1 : -1
     }
-  }) {
+  }, initial_state = []) {
     return new Vue({
       name: 'collection',
       data() {
         return {
-          models: []
+          models: initial_state
         }
       },
       computed: {

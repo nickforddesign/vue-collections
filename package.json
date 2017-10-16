@@ -96,9 +96,12 @@
     "verbose": true,
     "collectCoverage": true,
     "coverageDirectory": "<rootDir>/coverage",
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/src/demo"
+    ],
     "testPathIgnorePatterns": [
-      "<rootDir>/node_modules",
-      "<rootDir>/config"
+      "<rootDir>/node_modules/",
+      "<rootDir>/config/"
     ],
     "moduleFileExtensions": [
       "js",
@@ -112,9 +115,6 @@
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
       ".*\\.(vue)$": "<rootDir>/node_modules/jest-vue-preprocessor"
     },
-    "transformIgnorePatterns": [
-      "node_modules/(?!vue-models|vue-req)"
-    ],
     "setupFiles": [
       "./src/tests/jest.conf.js"
     ]

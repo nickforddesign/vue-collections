@@ -36,8 +36,7 @@ import { Collection } from 'vue-collections'
 export default {
   collection() {
     return new Collection({
-      basePath: 'tenants',
-      createPath: 'invite'
+      basePath: 'tenants'
     })
   },
   created() {

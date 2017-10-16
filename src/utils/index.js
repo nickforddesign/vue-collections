@@ -47,9 +47,11 @@ export function translateModel (vm, data) {
 // encode entire collection based on schema
 export function encodeModels (vm) {
   const Model = vm.Model
-  return vm.models.map(data => {
-    return new Model(data).encode()
-  })
+  if (Model) {
+    return vm.models.map(data => {
+      return new Model(data).encode()
+    })
+  }
 }
 
 // reset collection or model state

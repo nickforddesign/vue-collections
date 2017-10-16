@@ -38,4 +38,4 @@ const test_component = new Vue({
   }
 })
 
-tests(test_component)
+tests(test_component, Collection)
