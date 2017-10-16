@@ -90,6 +90,9 @@ export default {
   methods: {
     fetch() {
       this.$collection.fetch()
+        .catch(() => {
+          alert('Unable to connect to server')
+        })
       // this.$collection.add(data())
       // this.$collection.sort()
     },
