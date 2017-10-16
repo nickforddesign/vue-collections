@@ -1,5 +1,5 @@
 /**
-  * vue-collections v1.1.0
+  * vue-collections v1.1.1
   * (c) 2017 Nick Ford
   * @license MIT
   */
@@ -2817,7 +2817,7 @@ function encodeModels(vm) {
 
 var makeComputedProp = function makeComputedProp(vm) {
   if (!vm.$options.computed) vm.$options.computed = {};
-  vm._collection = vm.$options.collection();
+  vm._collection = vm.$options.collection;
   vm.$options.computed.$collection = {
     get: function get() {
       return vm._collection;
@@ -2827,12 +2827,19 @@ var makeComputedProp = function makeComputedProp(vm) {
     }
   };
   vm.$options.computed.collection = function () {
-    return vm._collection.models;
+    return vm.$collection.models;
   };
 };
 
 var init = function init(vm) {
+  if (!vm.$options.computed) {
+    vm.$options.computed = {};
+  }
   makeComputedProp(vm);
+};
+
+var init_collections = function init_collections(vm) {
+  vm._collection = vm._collection();
 };
 
 var makeMixin = (function (Vue) {
@@ -2840,6 +2847,11 @@ var makeMixin = (function (Vue) {
     beforeCreate: function beforeCreate() {
       if (isDef(this.$options.collection)) {
         init(this);
+      }
+    },
+    created: function created() {
+      if (isDef(this.$options.collection)) {
+        init_collections(this);
       }
     },
     beforeDestroy: function beforeDestroy() {
