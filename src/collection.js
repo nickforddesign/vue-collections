@@ -60,8 +60,7 @@ export default class Collection {
         async reset() {
           this.models = []
         },
-        add(data) {
-          console.log({data})
+        async add(data) {
           if (data instanceof Array) {
             insertModels(this, data)
           } else {

@@ -31,7 +31,6 @@ const test_component = new Vue({
     })
   },
   created() {
-    console.log('fetching')
     this.fetch()
   },
   methods: {
