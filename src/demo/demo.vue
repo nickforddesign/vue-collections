@@ -7,7 +7,11 @@
         <tr>
           <td width="75%">
             <p>
-              The following is a demo of using the vue-collections plugin to fetch models from a simulated REST API. The models are then passed to the vue-models plugin.
+              The following is a demo of using the vue-collections plugin to 
+              fetch models from a simulated REST API. The models are then passed 
+              to the vue-models plugin. Fetching collection data will only work 
+              if running this demo with npm start, otherwise use the add button 
+              to insert stubbed data.
             </p>
           </td>
           <td>

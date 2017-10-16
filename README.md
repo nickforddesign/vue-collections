@@ -28,7 +28,7 @@ Clone the repository and run `npm start` or view a live demo [here](https://cdn.
 
 ## Collections
 
-A light implementation of Collections that binds a collection of models to a Vuex instance, and provides some basic methods for CRUD operations.
+A light implementation of collections in Vue.js that binds a collection of models to a Vue instance, and transforms collection data based on schemas. More information about transforming model data with schemas in [vue-models](https://github.com/nickforddesign/vue-models).
 
 ```js
 import { Collection } from 'vue-collections'

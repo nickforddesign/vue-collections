@@ -1,5 +1,5 @@
 /**
-  * vue-collections v1.0.2
+  * vue-collections v1.1.0
   * (c) 2017 Nick Ford
   * @license MIT
   */
