@@ -7,16 +7,19 @@ export function isDef (obj) {
 
 // insert model into collection, or update existing model
 export async function insertModel (vm, model = {}) {
+  console.log('insertModel')
+  console.log(vm.models, model)
   const model_data = translateModel(vm, model)
   let match = vm.models.find(data => data.id === model_data.id)
-  // console.log({match})
   if (match) {
+    console.log('found a match', {match})
     match = model_data
   } else {
     const method = vm.reverse
       ? 'unshift'
       : 'push'
     vm.models[method](model_data)
+    console.log('did not find a match for', model_data.id)
   }
 }
 

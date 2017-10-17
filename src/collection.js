@@ -94,7 +94,7 @@ export default class Collection {
           })
         },
         sort() {
-          // console.log('sort')
+          console.log('sort')
           // console.log({sortBy})
           if (sortBy) {
             const full_data = this.encode()
