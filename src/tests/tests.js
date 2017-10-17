@@ -113,5 +113,17 @@ export default (test_component, Collection) => {
       expect(collection.models.length)
         .toBe(2)
     })
+
+    it('should throw error when invalid initial state is passed', () => {
+      expect(() => {
+        /* eslint-disable no-new */
+        new Collection({
+          basePath: 'things'
+        }, {
+          id: 1
+        })
+      })
+        .toThrow(TypeError)
+    })
   })
 }

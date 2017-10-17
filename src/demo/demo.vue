@@ -102,7 +102,7 @@ export default {
     async addAll() {
       // this.$collection.fetch()
       await this.$collection.add(data())
-      this.$collection.sort()
+      // this.$collection.sort()
     },
     reset() {
       return this.$collection.reset()

@@ -2,7 +2,8 @@ import {
   insertModel,
   insertModels,
   deleteModel,
-  encodeModels
+  encodeModels,
+  validateModels
 } from './utils'
 
 let Vue
@@ -25,13 +26,21 @@ export default class Collection {
     }
   }, initial_state = []) {
     if (!Vue) {
-      throw new ReferenceError('You must install VueCollections via Vue.use(VueCollections) before you can create collections.')
+      throw new ReferenceError('You must install VueCollections via Vue.use(VueCollections).')
+    }
+    if (!validateModels(initial_state)) {
+      return null
     }
     return new Vue({
       name: 'collection',
       data() {
         return {
-          models: initial_state
+          models: []
+        }
+      },
+      created() {
+        if (initial_state) {
+          this.add(initial_state)
         }
       },
       computed: {
@@ -94,7 +103,7 @@ export default class Collection {
           })
         },
         sort() {
-          console.log('sort')
+          // console.log('sort')
           // console.log({sortBy})
           if (sortBy) {
             const full_data = this.encode()
