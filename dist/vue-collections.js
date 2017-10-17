@@ -2711,21 +2711,24 @@ var insertModel = function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
+            console.log('insertModel');
+            console.log(vm.models, model);
             model_data = translateModel(vm, model);
             match = vm.models.find(function (data) {
               return data.id === model_data.id;
             });
-            // console.log({match})
 
             if (match) {
+              console.log('found a match', { match: match });
               match = model_data;
             } else {
               method = vm.reverse ? 'unshift' : 'push';
 
               vm.models[method](model_data);
+              console.log('did not find a match for', model_data.id);
             }
 
-          case 3:
+          case 5:
           case 'end':
             return _context.stop();
         }
@@ -3009,7 +3012,7 @@ var Collection$1 = function () {
           });
         },
         sort: function sort() {
-          // console.log('sort')
+          console.log('sort');
           // console.log({sortBy})
           if (sortBy) {
             var full_data = this.encode();
