@@ -1,5 +1,5 @@
 /**
-  * vue-collections v1.1.2
+  * vue-collections v1.1.3
   * (c) 2017 Nick Ford
   * @license MIT
   */
@@ -3140,14 +3140,17 @@ function isDef(obj) {
 var insertModel = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee(vm) {
     var model = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    var model_data, match, method;
+    var model_data, id_attribute, match, method;
     return regenerator.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             model_data = translateModel(vm, model);
+            id_attribute = vm.id_attribute;
+            // console.log({id_attribute})
+
             match = vm.models.find(function (data) {
-              return data.id === model_data.id;
+              return data[id_attribute] === model_data[id_attribute];
             });
 
             if (match) {
@@ -3158,7 +3161,7 @@ var insertModel = function () {
               vm.models[method](model_data);
             }
 
-          case 3:
+          case 4:
           case 'end':
             return _context.stop();
         }
@@ -3482,12 +3485,12 @@ var Collection$1 = function () {
   return Collection;
 }();
 
-var VueCollection = function () {
-  function VueCollection() {
-    _classCallCheck(this, VueCollection);
+var VueCollections = function () {
+  function VueCollections() {
+    _classCallCheck(this, VueCollections);
   }
 
-  _createClass(VueCollection, null, [{
+  _createClass(VueCollections, null, [{
     key: 'install',
     value: function install(Vue) {
       Vue.mixin(makeMixin(Vue));
@@ -3504,9 +3507,9 @@ var VueCollection = function () {
     }
   }]);
 
-  return VueCollection;
+  return VueCollections;
 }();
 
-return VueCollection;
+return VueCollections;
 
 })));
