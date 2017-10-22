@@ -1,7 +1,7 @@
 import makeMixin from './mixin'
 import Collection from './collection'
 
-export default class VueCollection {
+export default class VueCollections {
   static install(Vue) {
     Vue.mixin(makeMixin(Vue))
     Collection.init(Vue)

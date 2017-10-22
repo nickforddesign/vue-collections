@@ -8,7 +8,9 @@ export function isDef (obj) {
 // insert model into collection, or update existing model
 export async function insertModel (vm, model = {}) {
   const model_data = translateModel(vm, model)
-  let match = vm.models.find(data => data.id === model_data.id)
+  const id_attribute = vm.id_attribute
+  // console.log({id_attribute})
+  let match = vm.models.find(data => data[id_attribute] === model_data[id_attribute])
   if (match) {
     match = model_data
   } else {

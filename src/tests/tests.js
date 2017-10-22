@@ -1,5 +1,5 @@
 export default (test_component, Collection) => {
-  describe('VueCollection - Vue binding', () => {
+  describe('VueCollections - Vue binding', () => {
     it('should correctly bind a collection to vue instance', () => {
       expect(test_component.$collection.models instanceof Array)
         .toBe(true)
@@ -100,7 +100,7 @@ export default (test_component, Collection) => {
     })
   })
 
-  describe('VueCollection - Collections', () => {
+  describe('VueCollections - Collections', () => {
     const collection = new Collection({
       basePath: 'things'
     }, [{
@@ -124,6 +124,31 @@ export default (test_component, Collection) => {
         })
       })
         .toThrow(TypeError)
+    })
+  })
+
+  describe('Vue-Collections - custom id attributes', () => {
+    const collection = new Collection({
+      basePath: 'things',
+      id_attribute: 'post_id'
+    }, [{
+      post_id: 1
+    },
+    {
+      post_id: 2
+    }])
+
+    it('should handle custom id attributes when creating a collection', () => {
+      expect(collection.models.length)
+        .toBe(2)
+    })
+
+    it('should handle models that already exist', () => {
+      collection.add({
+        post_id: 2
+      })
+      expect(collection.models.length)
+        .toBe(2)
     })
   })
 }
