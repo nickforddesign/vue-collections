@@ -3,7 +3,8 @@ import {
   insertModels,
   deleteModel,
   encodeModels,
-  validateModels
+  validateModels,
+  iteratorToObject
 } from './utils'
 
 let Vue
@@ -35,7 +36,8 @@ export default class Collection {
       name: 'collection',
       data() {
         return {
-          models: []
+          models: [],
+          total_count: null
         }
       },
       created() {
@@ -44,7 +46,7 @@ export default class Collection {
         }
       },
       computed: {
-        $basePath () {
+        $basePath() {
           return typeof basePath === 'function'
             ? basePath()
             : basePath
@@ -61,9 +63,14 @@ export default class Collection {
       },
       methods: {
         fetch() {
-          const request = this.$request(`${this.$basePath}`)
+          const request = this.$request(`${this.$basePath}`, {
+            responseHeaders: true
+          })
           request.then(response => {
-            this.add(response)
+            const headers = iteratorToObject(response.headers)
+            const total_count_header = headers['collection_total_count']
+            this.total_count = total_count_header || response.body.length
+            this.add(response.body)
           })
           return request
         },
