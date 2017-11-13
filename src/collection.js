@@ -37,7 +37,8 @@ export default class Collection {
       data() {
         return {
           models: [],
-          total_count: null
+          total_count: 0,
+          basePath
         }
       },
       created() {
@@ -47,9 +48,9 @@ export default class Collection {
       },
       computed: {
         $basePath() {
-          return typeof basePath === 'function'
-            ? basePath()
-            : basePath
+          return typeof this.basePath === 'function'
+            ? this.basePath()
+            : this.basePath
         },
         Model() {
           return model

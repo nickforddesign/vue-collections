@@ -151,4 +151,18 @@ export default (test_component, Collection) => {
         .toBe(2)
     })
   })
+
+  describe('Vue-Collections - updating basePath', () => {
+    it('should handle changes to basePath', () => {
+      const collection = new Collection({
+        basePath: 'test'
+      })
+      const basePath = collection.$basePath
+      collection.basePath = () => {
+        return `${basePath}?some_query=true`
+      }
+      expect(collection.$basePath)
+        .toBe('test?some_query=true')
+    })
+  })
 }
