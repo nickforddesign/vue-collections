@@ -3390,7 +3390,8 @@ var Collection$1 = function () {
       data: function data() {
         return {
           models: [],
-          total_count: null
+          total_count: 0,
+          basePath: basePath
         };
       },
       created: function created() {
@@ -3401,7 +3402,7 @@ var Collection$1 = function () {
 
       computed: {
         $basePath: function $basePath() {
-          return typeof basePath === 'function' ? basePath() : basePath;
+          return typeof this.basePath === 'function' ? this.basePath() : this.basePath;
         },
         Model: function Model() {
           return model;
