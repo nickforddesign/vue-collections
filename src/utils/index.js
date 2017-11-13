@@ -78,3 +78,12 @@ export function resetAllStates (state, modules) {
     resetState(state[key], modules[key].defaults())
   })
 }
+
+// convert iterator to object
+export function iteratorToObject (iterator) {
+  const obj = {}
+  for (let tuple of iterator) {
+    obj[tuple[0]] = tuple[1]
+  }
+  return obj
+}

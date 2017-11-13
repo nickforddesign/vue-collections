@@ -1,5 +1,5 @@
 /**
-  * vue-collections v1.1.3
+  * vue-collections v1.1.5
   * (c) 2017 Nick Ford
   * @license MIT
   */
@@ -339,22 +339,11 @@ var path = /*#__PURE__*/_curry2_1(function path(paths, obj) {
 });
 var path_1 = path;
 
-// 7.2.1 RequireObjectCoercible(argument)
-var _defined = function (it) {
-  if (it == undefined) throw TypeError("Can't call method on  " + it);
-  return it;
+var _iterStep = function (done, value) {
+  return { value: value, done: !!done };
 };
 
-// 7.1.13 ToObject(argument)
-
-var _toObject = function (it) {
-  return Object(_defined(it));
-};
-
-var hasOwnProperty = {}.hasOwnProperty;
-var _has = function (it, key) {
-  return hasOwnProperty.call(it, key);
-};
+var _iterators = {};
 
 var toString = {}.toString;
 
@@ -369,11 +358,26 @@ var _iobject = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
   return _cof(it) == 'String' ? it.split('') : Object(it);
 };
 
+// 7.2.1 RequireObjectCoercible(argument)
+var _defined = function (it) {
+  if (it == undefined) throw TypeError("Can't call method on  " + it);
+  return it;
+};
+
 // to indexed object, toObject with fallback for non-array-like ES3 strings
 
 
 var _toIobject = function (it) {
   return _iobject(_defined(it));
+};
+
+var _library = true;
+
+var _redefine = _hide;
+
+var hasOwnProperty = {}.hasOwnProperty;
+var _has = function (it, key) {
+  return hasOwnProperty.call(it, key);
 };
 
 // 7.1.4 ToInteger
@@ -440,14 +444,14 @@ var _sharedKey = function (key) {
 };
 
 var arrayIndexOf = _arrayIncludes(false);
-var IE_PROTO = _sharedKey('IE_PROTO');
+var IE_PROTO$1 = _sharedKey('IE_PROTO');
 
 var _objectKeysInternal = function (object, names) {
   var O = _toIobject(object);
   var i = 0;
   var result = [];
   var key;
-  for (key in O) if (key != IE_PROTO) _has(O, key) && result.push(key);
+  for (key in O) if (key != IE_PROTO$1) _has(O, key) && result.push(key);
   // Don't enum bug & hidden keys
   while (names.length > i) if (_has(O, key = names[i++])) {
     ~arrayIndexOf(result, key) || result.push(key);
@@ -468,57 +472,6 @@ var _objectKeys = Object.keys || function keys(O) {
   return _objectKeysInternal(O, _enumBugKeys);
 };
 
-// most Object methods by ES6 should accept primitives
-
-
-
-var _objectSap = function (KEY, exec) {
-  var fn = (_core.Object || {})[KEY] || Object[KEY];
-  var exp = {};
-  exp[KEY] = exec(fn);
-  _export(_export.S + _export.F * _fails(function () { fn(1); }), 'Object', exp);
-};
-
-// 19.1.2.14 Object.keys(O)
-
-
-
-_objectSap('keys', function () {
-  return function keys(it) {
-    return _objectKeys(_toObject(it));
-  };
-});
-
-var keys$1 = _core.Object.keys;
-
-var keys = createCommonjsModule(function (module) {
-module.exports = { "default": keys$1, __esModule: true };
-});
-
-unwrapExports(keys);
-
-// true  -> String#at
-// false -> String#codePointAt
-var _stringAt = function (TO_STRING) {
-  return function (that, pos) {
-    var s = String(_defined(that));
-    var i = _toInteger(pos);
-    var l = s.length;
-    var a, b;
-    if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
-    a = s.charCodeAt(i);
-    return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff
-      ? TO_STRING ? s.charAt(i) : a
-      : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
-  };
-};
-
-var _library = true;
-
-var _redefine = _hide;
-
-var _iterators = {};
-
 var _objectDps = _descriptors ? Object.defineProperties : function defineProperties(O, Properties) {
   _anObject(O);
   var keys = _objectKeys(Properties);
@@ -536,7 +489,7 @@ var _html = document$2 && document$2.documentElement;
 
 
 
-var IE_PROTO$1 = _sharedKey('IE_PROTO');
+var IE_PROTO = _sharedKey('IE_PROTO');
 var Empty = function () { /* empty */ };
 var PROTOTYPE$1 = 'prototype';
 
@@ -569,7 +522,7 @@ var _objectCreate = Object.create || function create(O, Properties) {
     result = new Empty();
     Empty[PROTOTYPE$1] = null;
     // add "__proto__" for Object.getPrototypeOf polyfill
-    result[IE_PROTO$1] = O;
+    result[IE_PROTO] = O;
   } else result = createDict();
   return Properties === undefined ? result : _objectDps(result, Properties);
 };
@@ -608,6 +561,12 @@ _hide(IteratorPrototype, _wks('iterator'), function () { return this; });
 var _iterCreate = function (Constructor, NAME, next) {
   Constructor.prototype = _objectCreate(IteratorPrototype, { next: _propertyDesc(1, next) });
   _setToStringTag(Constructor, NAME + ' Iterator');
+};
+
+// 7.1.13 ToObject(argument)
+
+var _toObject = function (it) {
+  return Object(_defined(it));
 };
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
@@ -696,28 +655,6 @@ var _iterDefine = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORC
 };
 
 'use strict';
-var $at = _stringAt(true);
-
-// 21.1.3.27 String.prototype[@@iterator]()
-_iterDefine(String, 'String', function (iterated) {
-  this._t = String(iterated); // target
-  this._i = 0;                // next index
-// 21.1.5.2.1 %StringIteratorPrototype%.next()
-}, function () {
-  var O = this._t;
-  var index = this._i;
-  var point;
-  if (index >= O.length) return { value: undefined, done: true };
-  point = $at(O, index);
-  this._i += point.length;
-  return { value: point, done: false };
-});
-
-var _iterStep = function (done, value) {
-  return { value: value, done: !!done };
-};
-
-'use strict';
 
 
 
@@ -763,6 +700,115 @@ for (var i = 0; i < DOMIterables.length; i++) {
   if (proto && !proto[TO_STRING_TAG]) _hide(proto, TO_STRING_TAG, NAME);
   _iterators[NAME] = _iterators.Array;
 }
+
+// true  -> String#at
+// false -> String#codePointAt
+var _stringAt = function (TO_STRING) {
+  return function (that, pos) {
+    var s = String(_defined(that));
+    var i = _toInteger(pos);
+    var l = s.length;
+    var a, b;
+    if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
+    a = s.charCodeAt(i);
+    return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff
+      ? TO_STRING ? s.charAt(i) : a
+      : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
+  };
+};
+
+'use strict';
+var $at = _stringAt(true);
+
+// 21.1.3.27 String.prototype[@@iterator]()
+_iterDefine(String, 'String', function (iterated) {
+  this._t = String(iterated); // target
+  this._i = 0;                // next index
+// 21.1.5.2.1 %StringIteratorPrototype%.next()
+}, function () {
+  var O = this._t;
+  var index = this._i;
+  var point;
+  if (index >= O.length) return { value: undefined, done: true };
+  point = $at(O, index);
+  this._i += point.length;
+  return { value: point, done: false };
+});
+
+// getting tag from 19.1.3.6 Object.prototype.toString()
+
+var TAG$1 = _wks('toStringTag');
+// ES3 wrong here
+var ARG = _cof(function () { return arguments; }()) == 'Arguments';
+
+// fallback for IE11 Script Access Denied error
+var tryGet = function (it, key) {
+  try {
+    return it[key];
+  } catch (e) { /* empty */ }
+};
+
+var _classof = function (it) {
+  var O, T, B;
+  return it === undefined ? 'Undefined' : it === null ? 'Null'
+    // @@toStringTag case
+    : typeof (T = tryGet(O = Object(it), TAG$1)) == 'string' ? T
+    // builtinTag case
+    : ARG ? _cof(O)
+    // ES3 arguments fallback
+    : (B = _cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
+};
+
+var ITERATOR$1 = _wks('iterator');
+
+var core_getIteratorMethod = _core.getIteratorMethod = function (it) {
+  if (it != undefined) return it[ITERATOR$1]
+    || it['@@iterator']
+    || _iterators[_classof(it)];
+};
+
+var core_getIterator = _core.getIterator = function (it) {
+  var iterFn = core_getIteratorMethod(it);
+  if (typeof iterFn != 'function') throw TypeError(it + ' is not iterable!');
+  return _anObject(iterFn.call(it));
+};
+
+var getIterator$1 = core_getIterator;
+
+var getIterator = createCommonjsModule(function (module) {
+module.exports = { "default": getIterator$1, __esModule: true };
+});
+
+var _getIterator = unwrapExports(getIterator);
+
+// most Object methods by ES6 should accept primitives
+
+
+
+var _objectSap = function (KEY, exec) {
+  var fn = (_core.Object || {})[KEY] || Object[KEY];
+  var exp = {};
+  exp[KEY] = exec(fn);
+  _export(_export.S + _export.F * _fails(function () { fn(1); }), 'Object', exp);
+};
+
+// 19.1.2.14 Object.keys(O)
+
+
+
+_objectSap('keys', function () {
+  return function keys(it) {
+    return _objectKeys(_toObject(it));
+  };
+});
+
+var keys$1 = _core.Object.keys;
+
+var keys = createCommonjsModule(function (module) {
+module.exports = { "default": keys$1, __esModule: true };
+});
+
+unwrapExports(keys);
 
 var f$1 = _wks;
 
@@ -1962,30 +2008,6 @@ if (hadRuntime) {
 
 var regenerator = runtimeModule;
 
-// getting tag from 19.1.3.6 Object.prototype.toString()
-
-var TAG$1 = _wks('toStringTag');
-// ES3 wrong here
-var ARG = _cof(function () { return arguments; }()) == 'Arguments';
-
-// fallback for IE11 Script Access Denied error
-var tryGet = function (it, key) {
-  try {
-    return it[key];
-  } catch (e) { /* empty */ }
-};
-
-var _classof = function (it) {
-  var O, T, B;
-  return it === undefined ? 'Undefined' : it === null ? 'Null'
-    // @@toStringTag case
-    : typeof (T = tryGet(O = Object(it), TAG$1)) == 'string' ? T
-    // builtinTag case
-    : ARG ? _cof(O)
-    // ES3 arguments fallback
-    : (B = _cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
-};
-
 var _anInstance = function (it, Constructor, name, forbiddenField) {
   if (!(it instanceof Constructor) || (forbiddenField !== undefined && forbiddenField in it)) {
     throw TypeError(name + ': incorrect invocation!');
@@ -2007,19 +2029,11 @@ var _iterCall = function (iterator, fn, value, entries) {
 
 // check on default Array iterator
 
-var ITERATOR$1 = _wks('iterator');
+var ITERATOR$2 = _wks('iterator');
 var ArrayProto = Array.prototype;
 
 var _isArrayIter = function (it) {
-  return it !== undefined && (_iterators.Array === it || ArrayProto[ITERATOR$1] === it);
-};
-
-var ITERATOR$2 = _wks('iterator');
-
-var core_getIteratorMethod = _core.getIteratorMethod = function (it) {
-  if (it != undefined) return it[ITERATOR$2]
-    || it['@@iterator']
-    || _iterators[_classof(it)];
+  return it !== undefined && (_iterators.Array === it || ArrayProto[ITERATOR$2] === it);
 };
 
 var _forOf = createCommonjsModule(function (module) {
@@ -3255,6 +3269,38 @@ function validateModels(models) {
 
 // reset all collection or model states
 
+
+// convert iterator to object
+function iteratorToObject(iterator) {
+  var obj = {};
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = _getIterator(iterator), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var tuple = _step.value;
+
+      obj[tuple[0]] = tuple[1];
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  return obj;
+}
+
 var makeComputedProp = function makeComputedProp(vm) {
   if (!vm.$options.computed) vm.$options.computed = {};
   vm._collection = vm.$options.collection;
@@ -3343,7 +3389,8 @@ var Collection$1 = function () {
       name: 'collection',
       data: function data() {
         return {
-          models: []
+          models: [],
+          total_count: null
         };
       },
       created: function created() {
@@ -3370,9 +3417,14 @@ var Collection$1 = function () {
         fetch: function fetch() {
           var _this = this;
 
-          var request = this.$request('' + this.$basePath);
+          var request = this.$request('' + this.$basePath, {
+            responseHeaders: true
+          });
           request.then(function (response) {
-            _this.add(response);
+            var headers = iteratorToObject(response.headers);
+            var total_count_header = headers['collection_total_count'];
+            _this.total_count = total_count_header || response.body.length;
+            _this.add(response.body);
           });
           return request;
         },
