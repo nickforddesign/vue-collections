@@ -1,5 +1,4 @@
 import Vue from 'vue'
-// import Vuex from 'vuex'
 import VueRequests from 'vue-requests'
 import VueModels from 'vue-models'
 import VueCollections from '../index'
@@ -26,7 +25,7 @@ const test_component = new Vue({
     return new Collection({
       model,
       basePath: 'users',
-      // sortBy: 'due_date',
+      sortBy: 'due_date',
       reverse: true
     })
   },

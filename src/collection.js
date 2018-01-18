@@ -111,12 +111,9 @@ export default class Collection {
           })
         },
         sort() {
-          // console.log('sort')
-          // console.log({sortBy})
           if (sortBy) {
             const full_data = this.encode()
             full_data.sort(sort.bind(null, sortBy))
-            // console.log(full_data)
             this.models.sort(sort.bind(null, sortBy))
           }
           if (this.reverse) {

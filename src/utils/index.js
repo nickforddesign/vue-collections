@@ -45,7 +45,7 @@ export function translateModel (vm, data) {
     : data
 }
 
-// encode entire collection based on schema
+// reencode entire collection based on schema
 export function encodeModels (vm) {
   const Model = vm.Model
   if (Model) {
@@ -55,6 +55,7 @@ export function encodeModels (vm) {
   }
 }
 
+// validate models paramater
 export function validateModels (models) {
   let valid = true
   if (models) {
@@ -63,20 +64,6 @@ export function validateModels (models) {
     }
   }
   return valid
-}
-
-// reset collection or model state
-export function resetState (state, defaults) {
-  Object.keys(defaults).forEach(key => {
-    state[key] = defaults[key]
-  })
-}
-
-// reset all collection or model states
-export function resetAllStates (state, modules) {
-  Object.keys(modules).forEach(key => {
-    resetState(state[key], modules[key].defaults())
-  })
 }
 
 // convert iterator to object

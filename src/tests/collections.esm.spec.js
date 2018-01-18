@@ -24,7 +24,7 @@ const test_component = new Vue({
     return new Collection({
       model,
       basePath: 'users',
-      // sortBy: 'due_date',
+      sortBy: 'due_date',
       reverse: true
     })
   },

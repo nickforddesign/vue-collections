@@ -75,11 +75,28 @@ export default (test_component, Collection) => {
       const matches = test_component.$collection.filter({
         role: 'manager'
       })
-      // matches.map(model => {
-      //   console.log(model.first_name)
-      // })
       expect(matches.length)
         .toBe(2)
+    })
+
+    it('should be able to eencode the entire collection to extended json', () => {
+      const encoded = test_component.$collection.encode()
+      const all_ids_are_objects = encoded.reduce((acc, model) => {
+        if (!(model._id instanceof Object)) {
+          acc = false
+        }
+        return acc
+      }, true)
+      expect(all_ids_are_objects)
+        .toBe(true)
+    })
+
+    it('should return undefined when using .find() and not finding a match', () => {
+      const match = test_component.$collection.find({
+        id: 'test'
+      })
+      expect(match)
+        .toBe(undefined)
     })
 
     // it('should be able to filter models based on multiple attributes', () => {
