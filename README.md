@@ -60,7 +60,7 @@ The Collection wrapper will also server as a control layer between the websocket
 
 ## Models
 
-Optionally, you may pass in a `vue-models` model class, which will transform the data in each of the models per the model's schema.
+Optionally, you may pass in a `vue-models` model class, which will transform the data in each of the models per the model's schema. 
 
 
 ## Build Setup
