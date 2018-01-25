@@ -83,7 +83,7 @@ export default class Collection {
       },
       methods: {
         fetch() {
-          const request = this.$request(`${this.url}`, {
+          const request = this.$request(`${this.$url}`, {
             responseHeaders: true
           })
           request.then(response => {
