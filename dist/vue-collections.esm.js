@@ -1,6 +1,6 @@
 /**
-  * vue-collections v1.1.5
-  * (c) 2017 Nick Ford
+  * vue-collections v1.2.0
+  * (c) 2018 Nick Ford
   * @license MIT
   */
 function unwrapExports (x) {
@@ -780,35 +780,6 @@ module.exports = { "default": getIterator$1, __esModule: true };
 });
 
 var _getIterator = unwrapExports(getIterator);
-
-// most Object methods by ES6 should accept primitives
-
-
-
-var _objectSap = function (KEY, exec) {
-  var fn = (_core.Object || {})[KEY] || Object[KEY];
-  var exp = {};
-  exp[KEY] = exec(fn);
-  _export(_export.S + _export.F * _fails(function () { fn(1); }), 'Object', exp);
-};
-
-// 19.1.2.14 Object.keys(O)
-
-
-
-_objectSap('keys', function () {
-  return function keys(it) {
-    return _objectKeys(_toObject(it));
-  };
-});
-
-var keys$1 = _core.Object.keys;
-
-var keys = createCommonjsModule(function (module) {
-module.exports = { "default": keys$1, __esModule: true };
-});
-
-unwrapExports(keys);
 
 var f$1 = _wks;
 
@@ -2901,8 +2872,8 @@ var _keys = typeof Object.keys === 'function' && !hasArgsEnumBug ? function keys
   }
   return ks;
 };
-var keys$3 = /*#__PURE__*/_curry1_1(_keys);
-var keys_1 = keys$3;
+var keys = /*#__PURE__*/_curry1_1(_keys);
+var keys_1 = keys;
 
 /**
  * Gives a single-word string description of the (native) type of a value,
@@ -3244,7 +3215,7 @@ function translateModel(vm, data) {
   ? new Model(data).$data : data;
 }
 
-// encode entire collection based on schema
+// reencode entire collection based on schema
 function encodeModels(vm) {
   var Model = vm.Model;
   if (Model) {
@@ -3254,6 +3225,7 @@ function encodeModels(vm) {
   }
 }
 
+// validate models paramater
 function validateModels(models) {
   var valid = true;
   if (models) {
@@ -3263,12 +3235,6 @@ function validateModels(models) {
   }
   return valid;
 }
-
-// reset collection or model state
-
-
-// reset all collection or model states
-
 
 // convert iterator to object
 function iteratorToObject(iterator) {
@@ -3348,6 +3314,94 @@ var makeMixin = (function (Vue) {
   };
 });
 
+'use strict';
+// 19.1.2.1 Object.assign(target, source, ...)
+
+
+
+
+
+var $assign = Object.assign;
+
+// should work with symbols and should have deterministic property order (V8 bug)
+var _objectAssign = !$assign || _fails(function () {
+  var A = {};
+  var B = {};
+  // eslint-disable-next-line no-undef
+  var S = Symbol();
+  var K = 'abcdefghijklmnopqrst';
+  A[S] = 7;
+  K.split('').forEach(function (k) { B[k] = k; });
+  return $assign({}, A)[S] != 7 || Object.keys($assign({}, B)).join('') != K;
+}) ? function assign(target, source) { // eslint-disable-line no-unused-vars
+  var T = _toObject(target);
+  var aLen = arguments.length;
+  var index = 1;
+  var getSymbols = _objectGops.f;
+  var isEnum = _objectPie.f;
+  while (aLen > index) {
+    var S = _iobject(arguments[index++]);
+    var keys = getSymbols ? _objectKeys(S).concat(getSymbols(S)) : _objectKeys(S);
+    var length = keys.length;
+    var j = 0;
+    var key;
+    while (length > j) if (isEnum.call(S, key = keys[j++])) T[key] = S[key];
+  } return T;
+} : $assign;
+
+// 19.1.3.1 Object.assign(target, source)
+
+
+_export(_export.S + _export.F, 'Object', { assign: _objectAssign });
+
+var assign$1 = _core.Object.assign;
+
+var assign = createCommonjsModule(function (module) {
+module.exports = { "default": assign$1, __esModule: true };
+});
+
+var _Object$assign = unwrapExports(assign);
+
+// most Object methods by ES6 should accept primitives
+
+
+
+var _objectSap = function (KEY, exec) {
+  var fn = (_core.Object || {})[KEY] || Object[KEY];
+  var exp = {};
+  exp[KEY] = exec(fn);
+  _export(_export.S + _export.F * _fails(function () { fn(1); }), 'Object', exp);
+};
+
+// 19.1.2.14 Object.keys(O)
+
+
+
+_objectSap('keys', function () {
+  return function keys(it) {
+    return _objectKeys(_toObject(it));
+  };
+});
+
+var keys$3 = _core.Object.keys;
+
+var keys$2 = createCommonjsModule(function (module) {
+module.exports = { "default": keys$3, __esModule: true };
+});
+
+var _Object$keys = unwrapExports(keys$2);
+
+var $JSON$1 = _core.JSON || (_core.JSON = { stringify: JSON.stringify });
+var stringify$1 = function stringify(it) { // eslint-disable-line no-unused-vars
+  return $JSON$1.stringify.apply($JSON$1, arguments);
+};
+
+var stringify = createCommonjsModule(function (module) {
+module.exports = { "default": stringify$1, __esModule: true };
+});
+
+var _JSON$stringify = unwrapExports(stringify);
+
 var Vue = void 0;
 
 var Collection$1 = function () {
@@ -3361,6 +3415,8 @@ var Collection$1 = function () {
   function Collection(_ref) {
     var _ref$model = _ref.model,
         model = _ref$model === undefined ? null : _ref$model,
+        _ref$query = _ref.query,
+        query = _ref$query === undefined ? {} : _ref$query,
         _ref$id_attribute = _ref.id_attribute,
         _id_attribute = _ref$id_attribute === undefined ? 'id' : _ref$id_attribute,
         _ref$basePath = _ref.basePath,
@@ -3371,7 +3427,6 @@ var Collection$1 = function () {
         sortBy = _ref$sortBy === undefined ? false : _ref$sortBy,
         _ref$sort = _ref.sort,
         _sort = _ref$sort === undefined ? function (key, a, b) {
-      // console.log(a[key], b[key])
       return a[key] < b[key] ? 1 : -1;
     } : _ref$sort;
 
@@ -3391,7 +3446,8 @@ var Collection$1 = function () {
         return {
           models: [],
           total_count: 0,
-          basePath: basePath
+          basePath: basePath,
+          query: query
         };
       },
       created: function created() {
@@ -3403,6 +3459,22 @@ var Collection$1 = function () {
       computed: {
         $basePath: function $basePath() {
           return typeof this.basePath === 'function' ? this.basePath() : this.basePath;
+        },
+        $url: function $url() {
+          return '' + this.$basePath + this.$query_string;
+        },
+        $joiner: function $joiner() {
+          return this.$basePath.includes('?') ? '&' : '?';
+        },
+        $query_string: function $query_string() {
+          var _this = this;
+
+          return this.$query_keys.length ? this.$joiner + this.$query_keys.map(function (key) {
+            return key + '=' + _JSON$stringify(_this.query[key]).replace(/"/g, '');
+          }, '').join('&') : '';
+        },
+        $query_keys: function $query_keys() {
+          return _Object$keys(this.query);
         },
         Model: function Model() {
           return model;
@@ -3416,75 +3488,77 @@ var Collection$1 = function () {
       },
       methods: {
         fetch: function fetch() {
-          var _this = this;
+          var _this2 = this;
 
-          var request = this.$request('' + this.$basePath, {
+          var request = this.$request('' + this.url, {
             responseHeaders: true
           });
           request.then(function (response) {
             var headers = iteratorToObject(response.headers);
             var total_count_header = headers['collection_total_count'];
-            _this.total_count = total_count_header || response.body.length;
-            _this.add(response.body);
+            _this2.total_count = total_count_header || response.body.length;
+            _this2.add(response.body);
           });
           return request;
         },
         reset: function reset() {
-          var _this2 = this;
+          var _this3 = this;
 
           return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
             return regenerator.wrap(function _callee$(_context) {
               while (1) {
                 switch (_context.prev = _context.next) {
                   case 0:
-                    _this2.models = [];
+                    _this3.models = [];
+                    return _context.abrupt('return', _this3);
 
-                  case 1:
+                  case 2:
                   case 'end':
                     return _context.stop();
                 }
               }
-            }, _callee, _this2);
+            }, _callee, _this3);
           }))();
         },
         add: function add(data) {
-          var _this3 = this;
+          var _this4 = this;
 
           return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee2() {
+            var insert;
             return regenerator.wrap(function _callee2$(_context2) {
               while (1) {
                 switch (_context2.prev = _context2.next) {
                   case 0:
-                    if (data instanceof Array) {
-                      insertModels(_this3, data);
-                    } else {
-                      insertModel(_this3, data);
-                    }
+                    insert = data instanceof Array ? insertModels : insertModel;
 
-                  case 1:
+                    insert(_this4, data);
+                    return _context2.abrupt('return', _this4);
+
+                  case 3:
                   case 'end':
                     return _context2.stop();
                 }
               }
-            }, _callee2, _this3);
+            }, _callee2, _this4);
           }))();
         },
         delete: function _delete(id) {
-          var _this4 = this;
+          var _this5 = this;
 
           return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee3() {
             return regenerator.wrap(function _callee3$(_context3) {
               while (1) {
                 switch (_context3.prev = _context3.next) {
                   case 0:
-                    deleteModel(_this4, id);
+                    deleteModel(_this5, id);
+                    return _context3.abrupt('return', _this5);
 
-                  case 1:
+                  case 2:
                   case 'end':
                     return _context3.stop();
                 }
               }
-            }, _callee3, _this4);
+            }, _callee3, _this5);
           }))();
         },
         find: function find(map) {
@@ -3510,20 +3584,34 @@ var Collection$1 = function () {
           });
         },
         sort: function sort() {
-          // console.log('sort')
-          // console.log({sortBy})
           if (sortBy) {
             var full_data = this.encode();
             full_data.sort(_sort.bind(null, sortBy));
-            // console.log(full_data)
             this.models.sort(_sort.bind(null, sortBy));
           }
           if (this.reverse) {
             this.models.reverse();
           }
+          return this;
         },
         encode: function encode() {
           return encodeModels(this);
+        },
+        query_set: function query_set(data) {
+          this.query = data;
+          return this;
+        },
+        query_push: function query_push(data) {
+          this.query = _Object$assign({}, this.query, data);
+          return this;
+        },
+        query_remove: function query_remove(key) {
+          Vue.delete(this.query, key);
+          return this;
+        },
+        query_clear: function query_clear() {
+          this.query = {};
+          return this;
         }
       }
     });
