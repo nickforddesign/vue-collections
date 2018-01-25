@@ -17,12 +17,12 @@ export default class Collection {
   }
   constructor({
     model = null,
+    query = {},
     id_attribute = 'id',
     basePath = '',
     reverse = false,
     sortBy = false,
     sort = (key, a, b) => {
-      // console.log(a[key], b[key])
       return a[key] < b[key] ? 1 : -1
     }
   }, initial_state = []) {
@@ -38,7 +38,8 @@ export default class Collection {
         return {
           models: [],
           total_count: 0,
-          basePath
+          basePath,
+          query
         }
       },
       created() {
@@ -52,6 +53,24 @@ export default class Collection {
             ? this.basePath()
             : this.basePath
         },
+        $url() {
+          return `${this.$basePath}${this.$query_string}`
+        },
+        $joiner() {
+          return this.$basePath.includes('?')
+            ? '&'
+            : '?'
+        },
+        $query_string() {
+          return this.$query_keys.length
+            ? this.$joiner + this.$query_keys.map(key => {
+              return `${key}=${JSON.stringify(this.query[key]).replace(/"/g, '')}`
+            }, '').join('&')
+            : ''
+        },
+        $query_keys() {
+          return Object.keys(this.query)
+        },
         Model() {
           return model
         },
@@ -64,7 +83,7 @@ export default class Collection {
       },
       methods: {
         fetch() {
-          const request = this.$request(`${this.$basePath}`, {
+          const request = this.$request(`${this.url}`, {
             responseHeaders: true
           })
           request.then(response => {
@@ -77,16 +96,18 @@ export default class Collection {
         },
         async reset() {
           this.models = []
+          return this
         },
         async add(data) {
-          if (data instanceof Array) {
-            insertModels(this, data)
-          } else {
-            insertModel(this, data)
-          }
+          const insert = data instanceof Array
+            ? insertModels
+            : insertModel
+          insert(this, data)
+          return this
         },
         async delete(id) {
           deleteModel(this, id)
+          return this
         },
         find(map) {
           return this.models.find(model => {
@@ -119,9 +140,26 @@ export default class Collection {
           if (this.reverse) {
             this.models.reverse()
           }
+          return this
         },
         encode() {
           return encodeModels(this)
+        },
+        query_set(data) {
+          this.query = data
+          return this
+        },
+        query_push(data) {
+          this.query = Object.assign({}, this.query, data)
+          return this
+        },
+        query_remove(key) {
+          Vue.delete(this.query, key)
+          return this
+        },
+        query_clear() {
+          this.query = {}
+          return this
         }
       }
     })

@@ -99,17 +99,6 @@ export default (test_component, Collection) => {
         .toBe(undefined)
     })
 
-    // it('should be able to filter models based on multiple attributes', () => {
-    //   const matches = test_component.$collection.filter({
-    //     role: 'manager',
-    //     avatar_color: 'teal'
-    //   })
-
-    //   // console.log(matches)
-    //   expect(matches.length)
-    //     .toBe(1)
-    // })
-
     it('should reset the collection successfully on destroy', () => {
       test_component.$destroy()
       expect(test_component.collection.length)
@@ -180,6 +169,57 @@ export default (test_component, Collection) => {
       }
       expect(collection.$basePath)
         .toBe('test?some_query=true')
+    })
+  })
+
+  describe('Vue-Collections - query strings', () => {
+    const collection = new Collection({
+      basePath: 'test',
+      query: {
+        one: true,
+        two: [1, 2, 'three']
+      }
+    })
+
+    it('should set query string on init', () => {
+      expect(collection.$url)
+        .toBe('test?one=true&two=[1,2,three]')
+    })
+
+    it('should update query using .query_push', () => {
+      collection.query_push({three: 'test'})
+      expect(collection.$url)
+        .toBe('test?one=true&two=[1,2,three]&three=test')
+    })
+
+    it('should update query using .query_remove', () => {
+      collection.query_remove('three')
+      expect(collection.$url)
+        .toBe('test?one=true&two=[1,2,three]')
+    })
+
+    it('should update query using .query_set', () => {
+      collection.query_set({four: 'test'})
+      expect(collection.$url)
+        .toBe('test?four=test')
+    })
+
+    it('should remove query using .query_clear', () => {
+      collection.query_clear()
+      expect(collection.$url)
+        .toBe('test')
+    })
+
+    const collection2 = new Collection({
+      basePath: 'test?one=test',
+      query: {
+        two: 'test'
+      }
+    })
+
+    it('should set query string correctly when there is a query string in basePath', () => {
+      expect(collection2.$url)
+        .toBe('test?one=test&two=test')
     })
   })
 }
