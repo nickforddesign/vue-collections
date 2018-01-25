@@ -1,5 +1,5 @@
 /**
-  * vue-collections v1.2.0
+  * vue-collections v1.2.1
   * (c) 2018 Nick Ford
   * @license MIT
   */
@@ -3490,7 +3490,7 @@ var Collection$1 = function () {
         fetch: function fetch() {
           var _this2 = this;
 
-          var request = this.$request('' + this.url, {
+          var request = this.$request('' + this.$url, {
             responseHeaders: true
           });
           request.then(function (response) {
