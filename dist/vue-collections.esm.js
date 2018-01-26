@@ -1,5 +1,5 @@
 /**
-  * vue-collections v1.2.1
+  * vue-collections v1.2.2
   * (c) 2018 Nick Ford
   * @license MIT
   */
@@ -3495,7 +3495,7 @@ var Collection$1 = function () {
           });
           request.then(function (response) {
             var headers = iteratorToObject(response.headers);
-            var total_count_header = headers['collection_total_count'];
+            var total_count_header = parseInt(headers['collection_total_count']);
             _this2.total_count = total_count_header || response.body.length;
             _this2.add(response.body);
           });
