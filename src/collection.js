@@ -88,7 +88,7 @@ export default class Collection {
           })
           request.then(response => {
             const headers = iteratorToObject(response.headers)
-            const total_count_header = headers['collection_total_count']
+            const total_count_header = parseInt(headers['collection_total_count'])
             this.total_count = total_count_header || response.body.length
             this.add(response.body)
           })
