@@ -55,6 +55,20 @@ export default (test_component, Collection) => {
         })
     })
 
+    it('should correctly sort the collection', () => {
+      test_component.$collection.sort((a, b) => {
+        return a.first_name < b.first_name
+          ? -1
+          : 1
+      })
+      expect(test_component.$collection.models[0].first_name)
+        .toBe('Jim')
+      expect(test_component.$collection.models[1].first_name)
+        .toBe('Michael')
+      expect(test_component.$collection.models[2].first_name)
+        .toBe('Pam')
+    })
+
     it('should handle extended json', () => {
       expect.assertions(1)
       return test_component.$collection.add({

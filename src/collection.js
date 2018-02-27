@@ -20,11 +20,7 @@ export default class Collection {
     query = {},
     id_attribute = 'id',
     basePath = '',
-    reverse = false,
-    sortBy = false,
-    sort = (key, a, b) => {
-      return a[key] < b[key] ? 1 : -1
-    }
+    reverse = false
   }, initial_state = []) {
     if (!Vue) {
       throw new ReferenceError('You must install VueCollections via Vue.use(VueCollections).')
@@ -131,15 +127,8 @@ export default class Collection {
             return match
           })
         },
-        sort() {
-          if (sortBy) {
-            const full_data = this.encode()
-            full_data.sort(sort.bind(null, sortBy))
-            this.models.sort(sort.bind(null, sortBy))
-          }
-          if (this.reverse) {
-            this.models.reverse()
-          }
+        sort(func) {
+          this.models = this.models.sort(func)
           return this
         },
         encode() {

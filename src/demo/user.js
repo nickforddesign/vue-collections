@@ -1,5 +1,5 @@
 import { Model } from 'vue-models'
-import { ObjectId, ISODate } from '../types'
+import { ObjectId, ISODate } from './types'
 
 export default class User extends Model {
   static defaults() {

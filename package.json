@@ -52,7 +52,6 @@
     "jest": "^21.2.1",
     "jest-fetch-mock": "^1.2.1",
     "jest-vue-preprocessor": "^1.2.0",
-    "moment": "^2.18.1",
     "opn": "^5.1.0",
     "optimize-css-assets-webpack-plugin": "^2.0.0",
     "ora": "^1.2.0",
@@ -95,7 +94,8 @@
     "collectCoverage": true,
     "coverageDirectory": "<rootDir>/coverage",
     "coveragePathIgnorePatterns": [
-      "<rootDir>/src/demo"
+      "<rootDir>/src/demo",
+      "<rootDir>/src/tests"
     ],
     "testPathIgnorePatterns": [
       "<rootDir>/node_modules/",

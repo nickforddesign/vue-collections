@@ -1,5 +1,5 @@
 /**
-  * vue-collections v1.2.2
+  * vue-collections v1.2.3
   * (c) 2018 Nick Ford
   * @license MIT
   */
@@ -3422,13 +3422,7 @@ var Collection$1 = function () {
         _ref$basePath = _ref.basePath,
         basePath = _ref$basePath === undefined ? '' : _ref$basePath,
         _ref$reverse = _ref.reverse,
-        _reverse = _ref$reverse === undefined ? false : _ref$reverse,
-        _ref$sortBy = _ref.sortBy,
-        sortBy = _ref$sortBy === undefined ? false : _ref$sortBy,
-        _ref$sort = _ref.sort,
-        _sort = _ref$sort === undefined ? function (key, a, b) {
-      return a[key] < b[key] ? 1 : -1;
-    } : _ref$sort;
+        _reverse = _ref$reverse === undefined ? false : _ref$reverse;
 
     var initial_state = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
@@ -3583,15 +3577,8 @@ var Collection$1 = function () {
             return match;
           });
         },
-        sort: function sort() {
-          if (sortBy) {
-            var full_data = this.encode();
-            full_data.sort(_sort.bind(null, sortBy));
-            this.models.sort(_sort.bind(null, sortBy));
-          }
-          if (this.reverse) {
-            this.models.reverse();
-          }
+        sort: function sort(func) {
+          this.models = this.models.sort(func);
           return this;
         },
         encode: function encode() {
